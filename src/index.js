@@ -4,6 +4,8 @@ import { refs } from './js/refs';
 import { pixabayAPI } from './js/pixabayAPI';
 import { createMarkup } from './js/createMarkup';
 import { onSpinnerStart, onSpinnerStop } from './js/spinner';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const pixabay = new pixabayAPI();
 //console.log(pixabay);
@@ -46,6 +48,10 @@ function onSubmit(event) {
       pixabay.calculateTotalPages(total);
       Notify.success(`${total} images found`);
       refs.form.reset();
+      const lightbox = new SimpleLightbox('.gallery a', {
+        captionsData: 'alt',
+        captionDelay: 250,
+      });
 
       if (pixabay.isShowLoadMore) {
         refs.loadMoreBtn.classList.remove('is-hidden');
@@ -72,6 +78,11 @@ function onLoadMore() {
     .getPhotos()
     .then(({ hits }) => {
       createMarkup(hits);
+      const gallery = new SimpleLightbox('.gallery a', {
+        captionsData: 'alt',
+        captionDelay: 250,
+      });
+      gallery.refresh();
     })
     .catch(error => {
       Notify.failure(error.message, 'Request error');
