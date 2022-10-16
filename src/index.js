@@ -11,7 +11,7 @@ const pixabay = new pixabayAPI();
 //console.log(pixabay);
 
 refs.form.addEventListener('submit', onSubmit);
-refs.loadMoreBtn.addEventListener('click', onLoadMore);
+
 
 async function onSubmit(event) {
   event.preventDefault();
@@ -39,6 +39,7 @@ async function onSubmit(event) {
       Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
+      onSpinnerStop();
       return;
     }
 
@@ -56,6 +57,7 @@ async function onSubmit(event) {
       refs.loadMoreBtn.classList.remove('is-hidden');
     }
     onSpinnerStop();
+    refs.loadMoreBtn.addEventListener('click', onLoadMore);
   } catch (error) {Notify.failure(error.message, 'Request error');
     clearPage();
 }
@@ -173,5 +175,4 @@ function clearPage() {
   pixabay.resetPage();
   refs.list.innerHTML = '';
   refs.loadMoreBtn.classList.add('is-hidden');
-}
- */
+} */
