@@ -1,26 +1,26 @@
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
-axios.defaults.headers.common['Authorization'] =
-  '30566775-fc3edcf21448041b2c5bbe7c5';
 
 export class pixabayAPI {
   #page = 1;
   #per_page = 40;
   #request = '';
   #total = 0;
-  /*  #options = {
+  #options = {
     params: {
-      q: this.#request,
+      key: '30566775-fc3edcf21448041b2c5bbe7c5',
+      //q: this.#request,
       image_type: 'photo',
       orientation: 'horizontal',
       safesearch: true,
+      per_page: this.#per_page,
     },
-  }; */
+  };
 
   async getPhotos() {
-    const urlAXIOS = ``;
-    const { data } = await axios.get(urlAXIOS /* this.#options */);
+    const urlAXIOS = `?q=${this.#request}&page=${this.#page}`;
+    const { data } = await axios.get(urlAXIOS, this.#options);
     return data;
   }
 
