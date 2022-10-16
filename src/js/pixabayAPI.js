@@ -1,4 +1,56 @@
+import axios from 'axios';
+
+axios.defaults.baseURL = 'https://pixabay.com/api/';
+axios.defaults.headers.common['Authorization'] =
+  '30566775-fc3edcf21448041b2c5bbe7c5';
+
 export class pixabayAPI {
+  #page = 1;
+  #per_page = 40;
+  #request = '';
+  #total = 0;
+  /*  #options = {
+    params: {
+      q: this.#request,
+      image_type: 'photo',
+      orientation: 'horizontal',
+      safesearch: true,
+    },
+  }; */
+
+  async getPhotos() {
+    const urlAXIOS = ``;
+    const { data } = await axios.get(urlAXIOS /* this.#options */);
+    return data;
+  }
+
+  set request(newRequest) {
+    this.#request = newRequest;
+  }
+
+  get request() {
+    return this.#request;
+  }
+
+  increment() {
+    this.#page += 1;
+  }
+
+  resetPage() {
+    this.#page = 1;
+  }
+
+  calculateTotalPages(total) {
+    this.#total = Math.ceil(total / this.#per_page);
+  }
+
+  get isShowLoadMore() {
+    return this.#page < this.#total;
+  }
+}
+
+////////////////////   then   //////////////////////
+/* export class pixabayAPI {
   #page = 1;
   #per_page = 40;
   #request = '';
@@ -42,4 +94,4 @@ export class pixabayAPI {
   get isShowLoadMore() {
     return this.#page < this.#total;
   }
-}
+} */
