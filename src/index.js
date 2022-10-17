@@ -12,10 +12,10 @@ const pixabay = new pixabayAPI();
 const lightbox = new SimpleLightbox('.gallery a', {
       captionsData: 'alt',
       captionDelay: 250,
-    });
+});
     
 refs.form.addEventListener('submit', onSubmit);
-
+    
 async function onSubmit(event) {
   event.preventDefault();
 
@@ -61,30 +61,34 @@ async function onSubmit(event) {
     clearPage();
 }
   
-function onLoadMore() {
+async function onLoadMore() {
+    onSpinnerStart();
+    
   pixabay.increment();
   if (!pixabay.isShowLoadMore) {
     refs.loadMoreBtn.classList.add('is-hidden');
     Notify.info(
       'We are sorry, but you have reached the end of search results.'
     );
+    onSpinnerStop();
+    return
   }
-  pixabay
-    .getPhotos()
-    .then(({ hits }) => {
-      createMarkup(hits);
-      lightbox.refresh();
-    })
-    .catch(error => {
-      Notify.failure(error.message, 'Request error');
+
+  try {
+    const { hits } = await pixabay.getPhotos();
+    createMarkup(hits);
+    lightbox.refresh();
+    onSpinnerStop();
+  } catch (error) {
+    Notify.failure(error.message, 'Request error');
       clearPage();
-    });
+  }
 }
 
+refs.loadMoreBtn.addEventListener('click', onLoadMore);
+  
 function clearPage() {
   pixabay.resetPage();
   refs.loadMoreBtn.classList.add('is-hidden');
   refs.list.innerHTML = '';
 }
-
-refs.loadMoreBtn.addEventListener('click', onLoadMore);
