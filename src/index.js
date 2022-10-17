@@ -13,9 +13,8 @@ const lightbox = new SimpleLightbox('.gallery a', {
       captionsData: 'alt',
       captionDelay: 250,
     });
-
+    
 refs.form.addEventListener('submit', onSubmit);
-refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
 async function onSubmit(event) {
   event.preventDefault();
@@ -56,7 +55,6 @@ async function onSubmit(event) {
 
     if (pixabay.isShowLoadMore) {
       refs.loadMoreBtn.classList.remove('is-hidden');
-      onLoadMore();
     }
     onSpinnerStop();
   } catch (error) {Notify.failure(error.message, 'Request error');
@@ -88,3 +86,5 @@ function clearPage() {
   refs.loadMoreBtn.classList.add('is-hidden');
   refs.list.innerHTML = '';
 }
+
+refs.loadMoreBtn.addEventListener('click', onLoadMore);
